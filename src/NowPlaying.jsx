@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import spotifyLogo from "./assets/spotifyLogo.png";
 import { useEffect, useState } from "react";
 import getNowPlayingItem from "./SpotifyAPI";
