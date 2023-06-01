@@ -1,4 +1,5 @@
 import queryString from "query-string";
+import { Buffer } from "buffer";
 
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
