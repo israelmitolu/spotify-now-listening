@@ -29,7 +29,7 @@ const SpotifyNowPlaying = (props) => {
         document.title = `Mitolu last listened to ${result.title} by ${result.artist}`;
       }
     } else {
-      document.title = "Loading...";
+      document.title = "Mitolu is offline";
     }
   }, [result, loading]);
 
