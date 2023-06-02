@@ -22,12 +22,16 @@ const SpotifyNowPlaying = (props) => {
 
   // Set the title of the page to the song title
   useEffect(() => {
-    if (result.title && result.isPlaying) {
-      document.title = `Mitolu is listening to ${result.title}`;
+    if (result && !loading) {
+      if (result.isPlaying) {
+        document.title = `Mitolu is listening to ${result.title}`;
+      } else {
+        document.title = `Mitolu last listened to ${result.title} by ${result.artist}`;
+      }
     } else {
-      document.title = `Mitolu last listened to ${result.title} by ${result.artist}`;
+      document.title = "Loading...";
     }
-  }, [result.title, result.isPlaying]);
+  }, [result, loading]);
 
   // Set the background color of the page to the album cover
   useEffect(() => {
