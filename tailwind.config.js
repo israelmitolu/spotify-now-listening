@@ -18,8 +18,14 @@ export default {
         "2xl": "2rem",
         "3xl": "5rem",
       },
+      keyframes: {
+        blink: {
+          "50%": { opacity: 0 },
+        },
+      },
       animation: {
         "spin-slow": "spin 2s linear infinite",
+        "blink-time": "blink 1s step-start infinite",
       },
     },
   },
