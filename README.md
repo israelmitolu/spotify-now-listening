@@ -4,4 +4,4 @@ This is a test of the Spotify API. It is a simple web app that displays the song
 
 ## Screenshot :camera:
 
-![Screenshot of the app](./public/Mitolu%20is%20listening%20to%20Death%20%26%20Taxes.jpg)
+![Screenshot of the app](./public/Mitolu%20is%20listening%20to%20Ascend.jpg)
