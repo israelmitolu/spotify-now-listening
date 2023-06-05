@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     if (
       !currentTrack?.isPlaying ||
-      currentTrack.currently_playing_type !== "track"
+      currentTrack?.currently_playing_type !== "track"
     ) {
       fetchLastPlayed().then((res) => {
         setLastPlayed(res);
@@ -41,14 +41,12 @@ function App() {
     }
   }, [currentTrack]);
 
-  // Set the title of the page to the song title
+  // Set the page title to the currently playing song or the last played song
   useEffect(() => {
-    if (currentTrack && !loading) {
-      if (currentTrack?.isPlaying) {
-        document.title = `Mitolu is listening to ${currentTrack.title}`;
-      } else {
-        document.title = `Mitolu last listened to ${lastPlayed.title} by ${lastPlayed.artist}`;
-      }
+    if (currentTrack?.isPlaying && !loading) {
+      document.title = `Mitolu is listening to ${currentTrack.title}`;
+    } else if (lastPlayed && !loading) {
+      document.title = `Mitolu last listened to ${lastPlayed.title} by ${lastPlayed.artist}`;
     } else {
       document.title = "Mitolu is offline";
     }
@@ -56,7 +54,7 @@ function App() {
 
   // Set the background color of the page to the album cover
   useEffect(() => {
-    if (currentTrack.albumImageUrl && currentTrack.isPlaying) {
+    if (currentTrack?.albumImageUrl && currentTrack?.isPlaying) {
       document.body.style.backgroundImage = `url(${currentTrack.albumImageUrl})`;
       document.body.style.backgroundSize = "cover";
       document.body.style.backgroundBlendMode = "soft-light";
