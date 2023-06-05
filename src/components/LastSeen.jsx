@@ -5,12 +5,10 @@ const LastSeen = ({ lastPlayed }) => {
   const formattedTime = moment(lastPlayed?.playedAt).fromNow();
 
   return (
-    <div className="hidden md:block absolute right-3 bottom-6 text-white text-[0.85rem]">
-      <span>
-        Last Active on Spotify
-        <span className="ml-1 px-1 font-medium bg-green-500 text-black rounded">
-          {formattedTime}
-        </span>
+    <div className="flex flex-col absolute right-0 bottom-10 text-white text-[0.75rem] text-right">
+      <span>Last seen 👀</span>
+      <span className="ml-1 px-1 font-medium bg-red-500 text-black rounded-tl rounded-bl">
+        {formattedTime}
       </span>
     </div>
   );
