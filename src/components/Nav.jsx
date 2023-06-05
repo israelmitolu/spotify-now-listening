@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const Nav = ({ currentTrack }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -34,7 +35,7 @@ const Nav = ({ currentTrack }) => {
         Israel <br /> Mitolu
       </p>
       <div className="text-black">
-        {!currentTrack.isPlaying ? (
+        {!currentTrack?.isPlaying ? (
           <span className="bg-gray-100 w-fit py-[2px] px-[6px] rounded-[4px]">
             Offline
           </span>
@@ -53,4 +54,9 @@ const Nav = ({ currentTrack }) => {
   );
 };
 
+Nav.propTypes = {
+  currentTrack: PropTypes.shape({
+    isPlaying: PropTypes.bool,
+  }),
+};
 export default Nav;
