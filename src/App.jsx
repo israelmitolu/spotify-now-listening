@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
 import NowPlaying from "./components/NowPlaying";
-import getNowPlayingItem from "./SpotifyAPI";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import { fetchNowPlaying, fetchLastPlayed } from "./SpotifyAPI";
+import LastSeen from "./components/LastSeen";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -12,31 +13,46 @@ function App() {
 
   // Get the currently playing song from the Spotify API
   useEffect(() => {
-    getNowPlayingItem().then((res) => {
+    fetchNowPlaying().then((res) => {
       setcurrentTrack(res);
       setLoading(false);
     });
-  });
+  }, []);
 
-  // Get the last played song from the Spotify API
+  //  Check the currently playing song every 3 seconds
   useEffect(() => {
-    getNowPlayingItem().then((res) => {
-      setLastPlayed(res);
-    });
+    const interval = setInterval(() => {
+      fetchNowPlaying().then((res) => {
+        setcurrentTrack(res);
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // If there is no currently playing song, get the last played song
+  useEffect(() => {
+    if (
+      !currentTrack?.isPlaying ||
+      currentTrack.currently_playing_type !== "track"
+    ) {
+      fetchLastPlayed().then((res) => {
+        setLastPlayed(res);
+      });
+    }
   }, [currentTrack]);
 
   // Set the title of the page to the song title
   useEffect(() => {
     if (currentTrack && !loading) {
-      if (currentTrack.isPlaying) {
+      if (currentTrack?.isPlaying) {
         document.title = `Mitolu is listening to ${currentTrack.title}`;
       } else {
-        document.title = `Mitolu last listened to ${currentTrack.title} by ${currentTrack.artist}`;
+        document.title = `Mitolu last listened to ${lastPlayed.title} by ${lastPlayed.artist}`;
       }
     } else {
       document.title = "Mitolu is offline";
     }
-  }, [currentTrack, loading]);
+  }, [currentTrack, loading, lastPlayed]);
 
   // Set the background color of the page to the album cover
   useEffect(() => {
@@ -47,10 +63,10 @@ function App() {
     } else {
       document.body.style.backgroundImage = "none";
     }
-  }, [currentTrack.albumImageUrl, currentTrack.isPlaying]);
+  }, [currentTrack?.albumImageUrl, currentTrack?.isPlaying]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen w-full p-6 m-auto backdrop-blur-xl">
+    <div className="relative flex flex-col items-center justify-between h-screen w-full p-6 m-auto backdrop-blur-xl">
       <Nav currentTrack={currentTrack} />
       <NowPlaying
         currentTrack={currentTrack}
@@ -58,6 +74,7 @@ function App() {
         lastPlayed={lastPlayed}
       />
       <Footer />
+      {!currentTrack?.isPlaying && <LastSeen lastPlayed={lastPlayed} />}
     </div>
   );
 }
