@@ -5,6 +5,7 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import { fetchNowPlaying, fetchLastPlayed } from "./SpotifyAPI";
 import LastSeen from "./components/LastSeen";
+import AudioVisualizer from "./components/AudioVisualizer";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,27 +53,36 @@ function App() {
     }
   }, [currentTrack, loading, lastPlayed]);
 
-  // Set the background color of the page to the album cover
+  // Set the background image to the currently playing song or the last played song
   useEffect(() => {
-    if (currentTrack?.albumImageUrl && currentTrack?.isPlaying) {
-      document.body.style.backgroundImage = `url(${currentTrack.albumImageUrl})`;
-      document.body.style.backgroundSize = "cover";
-      document.body.style.backgroundBlendMode = "soft-light";
-    } else {
-      document.body.style.backgroundImage = "none";
-    }
-  }, [currentTrack?.albumImageUrl, currentTrack?.isPlaying]);
+    const imageUrl = currentTrack?.isPlaying
+      ? currentTrack?.albumImageUrl
+      : lastPlayed?.albumImageUrl;
+
+    document.body.style.backgroundImage = imageUrl
+      ? `url(${imageUrl})`
+      : "none";
+    document.body.style.backgroundSize = imageUrl ? "cover" : null;
+    document.body.style.backgroundBlendMode = imageUrl ? "soft-light" : null;
+  }, [
+    currentTrack?.albumImageUrl,
+    currentTrack?.isPlaying,
+    lastPlayed?.albumImageUrl,
+  ]);
 
   return (
     <div className="relative flex flex-col items-center justify-between h-screen w-full p-6 m-auto backdrop-blur-xl">
       <Nav currentTrack={currentTrack} />
-      <NowPlaying
-        currentTrack={currentTrack}
-        loading={loading}
-        lastPlayed={lastPlayed}
-      />
-      <Footer />
+      <div className="flex flex-col items-center">
+        <NowPlaying
+          currentTrack={currentTrack}
+          loading={loading}
+          lastPlayed={lastPlayed}
+        />
+        <AudioVisualizer currentTrack={currentTrack} lastPlayed={lastPlayed} />
+      </div>
       {!currentTrack?.isPlaying && <LastSeen lastPlayed={lastPlayed} />}
+      <Footer />
     </div>
   );
 }

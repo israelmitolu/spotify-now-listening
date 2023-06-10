@@ -83,6 +83,7 @@ export const fetchNowPlaying = async () => {
     const songUrl = data.item.external_urls.spotify;
     const title = data.item.name;
     const currently_playing_type = data.currently_playing_type;
+    const previewUrl = data.item?.preview_url;
 
     return {
       albumImageUrl,
@@ -91,6 +92,7 @@ export const fetchNowPlaying = async () => {
       songUrl,
       title,
       currently_playing_type,
+      previewUrl,
     };
   } catch (error) {
     console.error("Error fetching now playing:", error);
@@ -113,6 +115,7 @@ export const fetchLastPlayed = async () => {
     const songUrl = lastPlayed?.external_urls.spotify;
     const title = lastPlayed?.name;
     const playedAt = data.items?.[0].played_at;
+    const previewUrl = lastPlayed?.preview_url;
 
     return {
       albumImageUrl,
@@ -120,6 +123,7 @@ export const fetchLastPlayed = async () => {
       songUrl,
       title,
       playedAt,
+      previewUrl,
     };
   } catch (error) {
     console.error("Error fetching last played tracks:", error);
